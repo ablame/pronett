@@ -146,8 +146,8 @@ export default function ClientSpacePage() {
                                 <p className="text-slate-400 text-xs mt-0.5">Commande #{order.id}</p>
                               </div>
                             </div>
-                            <span className={`shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold ${status?.bg ?? 'bg-slate-100'} ${status?.text ?? 'text-slate-600'}`}>
-                              {status?.icon} {status?.label ?? order.status}
+                            <span className={`shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold ${status?.color ?? 'bg-slate-100 text-slate-600'}`}>
+                              {status?.label ?? order.status}
                             </span>
                           </div>
 
