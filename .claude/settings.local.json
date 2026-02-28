@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install)",
+      "Bash(echo $PATH)",
+      "Bash(/usr/local/bin/brew list)",
+      "Bash(/usr/local/bin/brew install node)",
+      "Bash(/usr/local/bin/node --version)",
+      "Bash(/usr/local/bin/npm --version)",
+      "Bash(/usr/local/bin/npm install)",
+      "Bash(xcode-select --install)",
+      "Bash(xcode-select -p)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(git init)",
+      "Bash(git add .)",
+      "Bash(git commit -m \"ProNett - premiere version\")"
+    ]
+  }
+}
