@@ -5,3 +5,4 @@ frontend/dist/
 backend/database.json
 backend/.env
 .DS_Store
+.claude/settings.local.json
