@@ -4,6 +4,7 @@ const { createServer } = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 const path = require('path');
 const fs = require('fs');
 const db = require('./db');
@@ -31,12 +32,18 @@ const SERVICE_LABELS = {
 };
 
 // ─── Mailer ───────────────────────────────────────────────────────────────────
-let transporter = null;
+let resendClient = null;
+let transporter = null; // fallback Nodemailer (mode test local)
 
 async function setupMailer() {
-  const { SMTP_HOST, SMTP_USER, SMTP_PASS, SMTP_PORT, SMTP_SECURE } = process.env;
+  const { RESEND_API_KEY, SMTP_HOST, SMTP_USER, SMTP_PASS, SMTP_PORT, SMTP_SECURE } = process.env;
 
-  if (SMTP_HOST && SMTP_USER && SMTP_PASS) {
+  if (RESEND_API_KEY) {
+    // ✅ Priorité 1 : Resend (HTTP — fonctionne sur Railway)
+    resendClient = new Resend(RESEND_API_KEY);
+    console.log('📧  Resend configuré (envoi HTTP)');
+  } else if (SMTP_HOST && SMTP_USER && SMTP_PASS) {
+    // Priorité 2 : SMTP classique
     transporter = nodemailer.createTransport({
       host: SMTP_HOST,
       port: parseInt(SMTP_PORT || '587'),
@@ -45,6 +52,7 @@ async function setupMailer() {
     });
     console.log('📧  SMTP configuré avec', SMTP_HOST);
   } else {
+    // Priorité 3 : Ethereal (test local uniquement)
     const testAccount = await nodemailer.createTestAccount();
     transporter = nodemailer.createTransport({
       host: 'smtp.ethereal.email',
@@ -53,15 +61,14 @@ async function setupMailer() {
       auth: { user: testAccount.user, pass: testAccount.pass },
     });
     console.log('📧  Mode test email activé — compte:', testAccount.user);
-    console.log('   (Les aperçus d\'email seront affichés dans ce terminal)');
+    console.log("   (Les aperçus d'email seront affichés dans ce terminal)");
   }
 }
 
 async function sendEmails(order) {
-  if (!transporter) return;
-
   const serviceLabel = SERVICE_LABELS[order.service] || order.service;
   const adminEmail = process.env.ADMIN_EMAIL || 'admin@pronett.fr';
+  const siteUrl = process.env.SITE_URL || 'http://localhost:5173';
 
   const tr = (label, value, bg) =>
     `<tr style="background:${bg}"><td style="padding:10px 14px;color:#64748b;font-weight:600;white-space:nowrap">${label}</td><td style="padding:10px 14px">${value}</td></tr>`;
@@ -91,44 +98,70 @@ async function sendEmails(order) {
       </div>
     </div>`;
 
-  // Email admin
-  const adminInfo = await transporter.sendMail({
-    from: '"ProNett App" <noreply@pronett.fr>',
-    to: adminEmail,
-    subject: `🔔 Nouvelle commande #${order.id} — ${serviceLabel}`,
-    html: wrap(`
-      <h2 style="color:#1d4ed8;margin-top:0">Commande #${order.id}</h2>
-      <p style="color:#475569">Une nouvelle demande vient d'être soumise.</p>
-      ${orderTable}
-      <div style="margin-top:24px;text-align:center">
-        <a href="http://localhost:5173/admin" style="background:#1d4ed8;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block">
-          Voir le tableau de bord →
-        </a>
-      </div>`),
-  });
+  const adminHtml = wrap(`
+    <h2 style="color:#1d4ed8;margin-top:0">Commande #${order.id}</h2>
+    <p style="color:#475569">Une nouvelle demande vient d'être soumise.</p>
+    ${orderTable}
+    <div style="margin-top:24px;text-align:center">
+      <a href="${siteUrl}/admin" style="background:#1d4ed8;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block">
+        Voir le tableau de bord →
+      </a>
+    </div>`);
 
-  const adminPreview = nodemailer.getTestMessageUrl(adminInfo);
-  if (adminPreview) console.log('\n📧  Email admin →', adminPreview);
+  const clientHtml = wrap(`
+    <p>Bonjour <strong>${order.client_name}</strong>,</p>
+    <p style="color:#475569">Nous avons bien reçu votre demande de <strong>${serviceLabel}</strong>. Notre équipe vous contactera rapidement.</p>
+    <div style="background:#eff6ff;border-left:4px solid #1d4ed8;padding:16px 20px;margin:20px 0;border-radius:0 8px 8px 0">
+      <p style="margin:0 0 8px;color:#1e40af;font-weight:700">Récapitulatif</p>
+      <p style="margin:4px 0;color:#334155">📅 Date : <strong>${order.date}</strong></p>
+      <p style="margin:4px 0;color:#334155">🕐 Créneau : <strong>${order.time_slot}</strong></p>
+      <p style="margin:4px 0;color:#334155">📍 Adresse : <strong>${order.address}</strong></p>
+    </div>
+    <p style="color:#475569">Cordialement,<br><strong>L'équipe ProNett</strong></p>`);
 
-  // Email client
-  const clientInfo = await transporter.sendMail({
-    from: '"ProNett" <noreply@pronett.fr>',
-    to: order.client_email,
-    subject: `✅ Demande reçue — ProNett #${order.id}`,
-    html: wrap(`
-      <p>Bonjour <strong>${order.client_name}</strong>,</p>
-      <p style="color:#475569">Nous avons bien reçu votre demande de <strong>${serviceLabel}</strong>. Notre équipe vous contactera rapidement.</p>
-      <div style="background:#eff6ff;border-left:4px solid #1d4ed8;padding:16px 20px;margin:20px 0;border-radius:0 8px 8px 0">
-        <p style="margin:0 0 8px;color:#1e40af;font-weight:700">Récapitulatif</p>
-        <p style="margin:4px 0;color:#334155">📅 Date : <strong>${order.date}</strong></p>
-        <p style="margin:4px 0;color:#334155">🕐 Créneau : <strong>${order.time_slot}</strong></p>
-        <p style="margin:4px 0;color:#334155">📍 Adresse : <strong>${order.address}</strong></p>
-      </div>
-      <p style="color:#475569">Cordialement,<br><strong>L'équipe ProNett</strong></p>`),
-  });
+  if (resendClient) {
+    // ─── Resend (production Railway) ──────────────────────────────
+    const fromAddr = 'ProNett <onboarding@resend.dev>';
 
-  const clientPreview = nodemailer.getTestMessageUrl(clientInfo);
-  if (clientPreview) console.log('📧  Email client →', clientPreview, '\n');
+    const [adminRes, clientRes] = await Promise.all([
+      resendClient.emails.send({
+        from: fromAddr,
+        to: adminEmail,
+        subject: `🔔 Nouvelle commande #${order.id} — ${serviceLabel}`,
+        html: adminHtml,
+      }),
+      resendClient.emails.send({
+        from: fromAddr,
+        to: order.client_email,
+        subject: `✅ Demande reçue — ProNett #${order.id}`,
+        html: clientHtml,
+      }),
+    ]);
+
+    console.log('📧  Email admin envoyé (Resend):', adminRes?.data?.id || adminRes?.error);
+    console.log('📧  Email client envoyé (Resend):', clientRes?.data?.id || clientRes?.error);
+  } else if (transporter) {
+    // ─── Nodemailer fallback (SMTP ou Ethereal local) ─────────────
+    const adminInfo = await transporter.sendMail({
+      from: '"ProNett App" <noreply@pronett.fr>',
+      to: adminEmail,
+      subject: `🔔 Nouvelle commande #${order.id} — ${serviceLabel}`,
+      html: adminHtml,
+    });
+    const adminPreview = nodemailer.getTestMessageUrl(adminInfo);
+    if (adminPreview) console.log('\n📧  Email admin →', adminPreview);
+
+    const clientInfo = await transporter.sendMail({
+      from: '"ProNett" <noreply@pronett.fr>',
+      to: order.client_email,
+      subject: `✅ Demande reçue — ProNett #${order.id}`,
+      html: clientHtml,
+    });
+    const clientPreview = nodemailer.getTestMessageUrl(clientInfo);
+    if (clientPreview) console.log('📧  Email client →', clientPreview, '\n');
+  } else {
+    console.warn('⚠️  Aucun mailer configuré — emails non envoyés');
+  }
 }
 
 // ─── Routes ───────────────────────────────────────────────────────────────────
