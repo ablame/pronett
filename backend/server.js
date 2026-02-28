@@ -183,6 +183,12 @@ app.get('/api/orders', (_req, res) => {
   res.json(db.getAllOrders());
 });
 
+app.get('/api/orders/by-email', (req, res) => {
+  const { email } = req.query;
+  if (!email) return res.status(400).json({ error: 'Email requis' });
+  res.json(db.getOrdersByEmail(email));
+});
+
 app.post('/api/orders', async (req, res) => {
   const { service, client_name, client_email, client_phone, address, date, time_slot, surface_area, notes } = req.body;
 

@@ -3,6 +3,7 @@ import Home from './pages/Home';
 import OrderPage from './pages/OrderPage';
 import ConfirmPage from './pages/ConfirmPage';
 import AdminPage from './pages/AdminPage';
+import ClientSpacePage from './pages/ClientSpacePage';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/commander" element={<OrderPage />} />
         <Route path="/confirmation" element={<ConfirmPage />} />
+        <Route path="/mon-espace" element={<ClientSpacePage />} />
         <Route path="/admin" element={<AdminPage />} />
       </Routes>
     </BrowserRouter>

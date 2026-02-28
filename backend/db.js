@@ -63,6 +63,11 @@ const db = {
     return true;
   },
 
+  getOrdersByEmail(email) {
+    const normalized = (email || '').trim().toLowerCase();
+    return data.orders.filter((o) => (o.client_email || '').toLowerCase() === normalized);
+  },
+
   getStats() {
     const todayStr = new Date().toLocaleDateString('fr-FR');
     return {

@@ -32,7 +32,7 @@ export default function Home() {
                 Commander une prestation
                 <ArrowRight size={18} />
               </Link>
-              <a href="tel:0600000000"
+              <a href="tel:0610854918"
                 className="inline-flex items-center justify-center gap-2 bg-white/15 hover:bg-white/25 text-white font-semibold px-7 py-4 rounded-xl transition-all backdrop-blur-sm border border-white/20">
                 <Phone size={18} /> Nous appeler
               </a>
@@ -223,7 +223,7 @@ export default function Home() {
             <Link to="/commander" className="inline-flex items-center justify-center gap-2 bg-white text-blue-700 font-bold px-8 py-4 rounded-xl hover:bg-blue-50 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5">
               Commander une prestation <ArrowRight size={20} />
             </Link>
-            <a href="tel:0600000000" className="inline-flex items-center justify-center gap-2 bg-white/15 hover:bg-white/25 text-white font-semibold px-8 py-4 rounded-xl transition-all border border-white/20">
+            <a href="tel:0610854918" className="inline-flex items-center justify-center gap-2 bg-white/15 hover:bg-white/25 text-white font-semibold px-8 py-4 rounded-xl transition-all border border-white/20">
               <Phone size={18} /> Nous appeler
             </a>
           </div>
@@ -240,7 +240,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
             {[
-              { icon: <Phone size={24} />, title: 'Téléphone', value: '06 00 00 00 00', href: 'tel:0600000000', color: 'bg-blue-100 text-blue-600' },
+              { icon: <Phone size={24} />, title: 'Téléphone', value: '06 10 85 49 18', href: 'tel:0610854918', color: 'bg-blue-100 text-blue-600' },
               { icon: <Mail size={24} />, title: 'Email', value: 'contact@pronett.fr', href: 'mailto:contact@pronett.fr', color: 'bg-emerald-100 text-emerald-600' },
               { icon: <MapPin size={24} />, title: 'Zone d\'intervention', value: 'Votre ville & alentours', href: '#', color: 'bg-purple-100 text-purple-600' },
             ].map(({ icon, title, value, href, color }) => (
@@ -289,8 +289,8 @@ export default function Home() {
               <h4 className="text-white font-semibold mb-4">Contact</h4>
               <ul className="space-y-3 text-sm">
                 <li>
-                  <a href="tel:0600000000" className="flex items-center gap-2 hover:text-white transition-colors">
-                    <Phone size={14} /> 06 00 00 00 00
+                  <a href="tel:0610854918" className="flex items-center gap-2 hover:text-white transition-colors">
+                    <Phone size={14} /> 06 10 85 49 18
                   </a>
                 </li>
                 <li>
@@ -311,7 +311,14 @@ export default function Home() {
           </div>
           <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm">
             <p>© {new Date().getFullYear()} ProNett. Tous droits réservés.</p>
-            <p className="text-slate-500">Fait avec ❤️ pour vous servir</p>
+            <div className="flex items-center gap-4">
+              <Link to="/mon-espace" className="text-slate-500 hover:text-white transition-colors">
+                Mon espace client
+              </Link>
+              <Link to="/admin" className="text-slate-700 hover:text-slate-500 transition-colors text-xs">
+                Espace Pro
+              </Link>
+            </div>
           </div>
         </div>
       </footer>

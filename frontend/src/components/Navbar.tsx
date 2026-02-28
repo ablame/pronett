@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Phone } from 'lucide-react';
+import { Menu, X, Phone, UserCircle } from 'lucide-react';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -46,15 +46,21 @@ export default function Navbar() {
                 {l.label}
               </a>
             ))}
+            <Link to="/mon-espace"
+              className={`flex items-center gap-1.5 font-medium transition-colors text-sm ${
+                isTransparent ? 'text-white/90 hover:text-white' : 'text-slate-600 hover:text-blue-600'
+              }`}>
+              <UserCircle size={15} /> Mon espace
+            </Link>
           </div>
 
           {/* CTA */}
           <div className="hidden md:flex items-center gap-4">
-            <a href="tel:0600000000"
+            <a href="tel:0610854918"
               className={`flex items-center gap-1.5 text-sm font-medium transition-colors ${
                 isTransparent ? 'text-white/90 hover:text-white' : 'text-slate-600 hover:text-blue-600'
               }`}>
-              <Phone size={15} /> 06 00 00 00 00
+              <Phone size={15} /> 06 10 85 49 18
             </a>
             <Link to="/commander"
               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2.5 rounded-xl transition-all text-sm shadow-md hover:shadow-lg hover:-translate-y-0.5">
@@ -81,10 +87,14 @@ export default function Navbar() {
                   {l.label}
                 </a>
               ))}
+              <Link to="/mon-espace" onClick={() => setOpen(false)}
+                className="px-4 py-3 text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium transition-colors flex items-center gap-2">
+                <UserCircle size={16} /> Mon espace
+              </Link>
               <div className="mt-3 px-4 flex flex-col gap-2 pt-3 border-t border-slate-100">
-                <a href="tel:0600000000"
+                <a href="tel:0610854918"
                   className="flex items-center justify-center gap-2 text-slate-600 py-2.5 font-medium border border-slate-200 rounded-xl">
-                  <Phone size={16} /> 06 00 00 00 00
+                  <Phone size={16} /> 06 10 85 49 18
                 </a>
                 <Link to="/commander" onClick={() => setOpen(false)} className="btn-primary text-center">
                   Commander une prestation
