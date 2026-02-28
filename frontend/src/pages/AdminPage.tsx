@@ -135,7 +135,7 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
           </button>
         </form>
         <p className="text-center text-xs text-slate-400 mt-4">
-          Mot de passe par défaut : <code className="bg-slate-100 px-1 rounded">Admin2024!</code>
+          Accès réservé à l'administrateur
         </p>
       </div>
     </div>
