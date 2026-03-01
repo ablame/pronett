@@ -4,6 +4,7 @@ import OrderPage from './pages/OrderPage';
 import ConfirmPage from './pages/ConfirmPage';
 import AdminPage from './pages/AdminPage';
 import ClientSpacePage from './pages/ClientSpacePage';
+import CGVPage from './pages/CGVPage';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/confirmation" element={<ConfirmPage />} />
         <Route path="/mon-espace" element={<ClientSpacePage />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/cgv" element={<CGVPage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -29,6 +29,38 @@ export interface Service {
   details: string[];
 }
 
+export interface QuoteItem {
+  description: string;
+  quantity: number;
+  unitPrice: number;
+}
+
+export interface Quote {
+  id: number;
+  reference: string;
+  type: 'devis' | 'facture';
+  orderId?: number | null;
+  clientEmail: string;
+  clientName: string;
+  clientPhone?: string;
+  items: QuoteItem[];
+  taxRate: number;
+  subtotal: number;
+  taxAmount: number;
+  total: number;
+  notes?: string;
+  validUntil?: string | null;
+  status: 'sent' | 'viewed' | 'signed' | 'refused' | 'paid';
+  signedAt: string | null;
+  createdAt: string;
+}
+
+export interface ClientUser {
+  id: number;
+  name: string;
+  email: string;
+}
+
 export const SERVICES: Service[] = [
   {
     id: 'conteneurs',
@@ -73,11 +105,19 @@ export const SERVICES: Service[] = [
 ];
 
 export const STATUS_CONFIG = {
-  pending: { label: 'En attente', color: 'bg-amber-100 text-amber-700', dot: 'bg-amber-500' },
-  confirmed: { label: 'Confirmé', color: 'bg-blue-100 text-blue-700', dot: 'bg-blue-500' },
-  in_progress: { label: 'En cours', color: 'bg-purple-100 text-purple-700', dot: 'bg-purple-500' },
-  completed: { label: 'Terminé', color: 'bg-emerald-100 text-emerald-700', dot: 'bg-emerald-500' },
-  cancelled: { label: 'Annulé', color: 'bg-red-100 text-red-700', dot: 'bg-red-400' },
+  pending:     { label: 'En attente', color: 'bg-amber-100 text-amber-700',   dot: 'bg-amber-500' },
+  confirmed:   { label: 'Confirmé',   color: 'bg-blue-100 text-blue-700',     dot: 'bg-blue-500' },
+  in_progress: { label: 'En cours',   color: 'bg-purple-100 text-purple-700', dot: 'bg-purple-500' },
+  completed:   { label: 'Terminé',    color: 'bg-emerald-100 text-emerald-700', dot: 'bg-emerald-500' },
+  cancelled:   { label: 'Annulé',     color: 'bg-red-100 text-red-700',       dot: 'bg-red-400' },
+} as const;
+
+export const QUOTE_STATUS_CONFIG = {
+  sent:    { label: 'En attente de signature', color: 'bg-amber-100 text-amber-700' },
+  viewed:  { label: 'Consulté',               color: 'bg-blue-100 text-blue-700' },
+  signed:  { label: 'Signé',                  color: 'bg-emerald-100 text-emerald-700' },
+  refused: { label: 'Refusé',                 color: 'bg-red-100 text-red-700' },
+  paid:    { label: 'Payé',                   color: 'bg-purple-100 text-purple-700' },
 } as const;
 
 export const TIME_SLOTS = [

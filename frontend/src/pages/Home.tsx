@@ -17,7 +17,7 @@ export default function Home() {
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 bg-white/15 text-white text-sm font-medium px-4 py-2 rounded-full mb-6 backdrop-blur-sm border border-white/20">
               <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-              Service disponible 6j/7 — Devis sous 24h
+              Service disponible 6j/7 — Devis sous 48h
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
               Un espace propre,
@@ -44,7 +44,7 @@ export default function Home() {
                 { icon: '⭐', text: '+200 clients satisfaits' },
                 { icon: '✅', text: 'Résultat garanti' },
                 { icon: '🔒', text: 'Personnel assuré' },
-                { icon: '⚡', text: 'Réponse sous 24h' },
+                { icon: '⚡', text: 'Réponse sous 48h' },
               ].map(({ icon, text }) => (
                 <div key={text} className="flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white text-sm px-4 py-2 rounded-full border border-white/15">
                   <span>{icon}</span><span>{text}</span>
@@ -146,7 +146,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <span className="text-blue-600 font-semibold text-sm uppercase tracking-widest">Nos engagements</span>
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mt-3 mb-8">Pourquoi choisir ProNett ?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mt-3 mb-8">Pourquoi choisir LumiNett ?</h2>
               <div className="space-y-6">
                 {[
                   { icon: <Shield size={20} />, title: 'Personnel certifié & assuré', desc: 'Toute notre équipe est formée et assurée pour intervenir chez vous en toute sécurité.' },
@@ -195,7 +195,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               { name: 'Sophie M.', role: 'Particulier', text: 'Équipe très professionnelle, ponctuelle et efficace. Mon appartement n\'a jamais été aussi propre. Je recommande vivement !' },
-              { name: 'Jean-Pierre D.', role: 'Gérant d\'entreprise', text: 'ProNett entretient nos bureaux chaque semaine. Travail impeccable, discret et toujours dans les délais. Très satisfait.' },
+              { name: 'Jean-Pierre D.', role: 'Gérant d\'entreprise', text: 'LumiNett entretient nos bureaux chaque semaine. Travail impeccable, discret et toujours dans les délais. Très satisfait.' },
               { name: 'Marie L.', role: 'Particulier', text: 'Nettoyage après travaux réalisé en une journée. Résultat parfait, rien à redire. Service top et prix honnête.' },
             ].map(({ name, role, text }) => (
               <div key={name} className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
@@ -263,7 +263,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
             <div>
               <div className="flex items-center gap-2 text-white font-bold text-xl mb-4">
-                <span>🧹</span> ProNett
+                <span>🧹</span> LumiNett
               </div>
               <p className="text-sm leading-relaxed">
                 Service professionnel de nettoyage pour particuliers et entreprises. Qualité, réactivité et discrétion garanties.
@@ -310,8 +310,11 @@ export default function Home() {
             </div>
           </div>
           <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm">
-            <p>© {new Date().getFullYear()} ProNett. Tous droits réservés.</p>
+            <p>© {new Date().getFullYear()} LumiNett. Tous droits réservés.</p>
             <div className="flex items-center gap-4">
+              <Link to="/cgv" className="text-slate-500 hover:text-white transition-colors">
+                CGV
+              </Link>
               <Link to="/mon-espace" className="text-slate-500 hover:text-white transition-colors">
                 Mon espace client
               </Link>
