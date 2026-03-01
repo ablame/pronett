@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin
 Disallow: /api/
 
-Sitemap: https://cleaning16.fr/sitemap.xml
+Sitemap: https://www.cleaning16.fr/sitemap.xml
