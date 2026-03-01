@@ -4,7 +4,7 @@ interface LogoProps {
 }
 
 /**
- * Logo LumiNett — Carré arrondi bleu dégradé avec L et étoile de lumière.
+ * Logo Cleaning 16 — Carré arrondi bleu dégradé avec L et étoile de lumière.
  * Lumi = lumière (sparkle), Nett = propre (L).
  */
 export default function Logo({ size = 36, className = '' }: LogoProps) {
@@ -17,7 +17,7 @@ export default function Logo({ size = 36, className = '' }: LogoProps) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
-      aria-label="LumiNett logo"
+      aria-label="Cleaning 16 logo"
     >
       {/* Fond carré arrondi dégradé bleu */}
       <rect width="40" height="40" rx="11" fill={`url(#${id})`} />

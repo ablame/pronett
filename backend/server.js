@@ -110,7 +110,7 @@ function wrapEmail(content) {
   return `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#f1f5f9">
     <div style="background:linear-gradient(135deg,#1d4ed8,#0ea5e9);padding:28px 24px;border-radius:12px 12px 0 0;text-align:center">
       <div style="font-size:32px">🧹</div>
-      <h1 style="margin:8px 0 4px;color:#fff;font-size:24px">LumiNett</h1>
+      <h1 style="margin:8px 0 4px;color:#fff;font-size:24px">Cleaning 16</h1>
       <p style="margin:0;color:#bfdbfe;font-size:14px">Service professionnel de nettoyage</p>
     </div>
     <div style="background:#fff;padding:28px 24px;border-radius:0 0 12px 12px;border:1px solid #e2e8f0">${content}</div>
@@ -118,12 +118,12 @@ function wrapEmail(content) {
 }
 
 async function sendEmail(to, subject, html) {
-  const from = 'LumiNett <onboarding@resend.dev>';
+  const from = 'Cleaning 16 <onboarding@resend.dev>';
   if (resendClient) {
     const r = await resendClient.emails.send({ from, to, subject, html });
     console.log(`📧  Email → ${to}:`, r?.data?.id || r?.error);
   } else if (transporter) {
-    const info = await transporter.sendMail({ from: '"LumiNett" <noreply@luminett.fr>', to, subject, html });
+    const info = await transporter.sendMail({ from: '"Cleaning 16" <noreply@cleaning16.fr>', to, subject, html });
     const preview = nodemailer.getTestMessageUrl(info);
     if (preview) console.log(`📧  Email → ${to}:`, preview);
   }
@@ -152,7 +152,7 @@ async function sendOrderEmails(order) {
         <div style="margin-top:24px;text-align:center">
           <a href="${siteUrl}/admin" style="background:#1d4ed8;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block">Voir le tableau de bord →</a>
         </div>`)),
-    sendEmail(order.client_email, `✅ Demande reçue — LumiNett #${order.id}`,
+    sendEmail(order.client_email, `✅ Demande reçue — Cleaning 16 #${order.id}`,
       wrapEmail(`<p>Bonjour <strong>${order.client_name}</strong>,</p>
         <p style="color:#475569">Nous avons bien reçu votre demande de <strong>${serviceLabel}</strong>. Notre équipe vous contactera sous <strong>24h</strong>.</p>
         <div style="background:#eff6ff;border-left:4px solid #1d4ed8;padding:16px 20px;margin:20px 0;border-radius:0 8px 8px 0">
@@ -161,16 +161,16 @@ async function sendOrderEmails(order) {
           <p style="margin:4px 0;color:#334155">🕐 Créneau : <strong>${order.time_slot}</strong></p>
           <p style="margin:4px 0;color:#334155">📍 Adresse : <strong>${order.address}</strong></p>
         </div>
-        <p style="color:#475569">Cordialement,<br><strong>L'équipe LumiNett</strong></p>`)),
+        <p style="color:#475569">Cordialement,<br><strong>L'équipe Cleaning 16</strong></p>`)),
   ]);
 }
 
 async function sendQuoteEmail(quote) {
   const siteUrl = process.env.SITE_URL || 'http://localhost:5173';
   const typeLabel = quote.type === 'facture' ? 'facture' : 'devis';
-  await sendEmail(quote.clientEmail, `📄 Nouveau ${typeLabel} disponible — LumiNett (${quote.reference})`,
+  await sendEmail(quote.clientEmail, `📄 Nouveau ${typeLabel} disponible — Cleaning 16 (${quote.reference})`,
     wrapEmail(`<p>Bonjour <strong>${quote.clientName}</strong>,</p>
-      <p style="color:#475569">Vous avez reçu un nouveau <strong>${typeLabel}</strong> de LumiNett.</p>
+      <p style="color:#475569">Vous avez reçu un nouveau <strong>${typeLabel}</strong> de Cleaning 16.</p>
       <div style="background:#eff6ff;border-left:4px solid #1d4ed8;padding:16px 20px;margin:20px 0;border-radius:0 8px 8px 0">
         <p style="margin:0 0 4px;color:#1e40af;font-weight:700">Référence : ${quote.reference}</p>
         <p style="margin:0;color:#334155">Montant total TTC : <strong>${Number(quote.total).toFixed(2)} €</strong></p>
@@ -180,7 +180,7 @@ async function sendQuoteEmail(quote) {
       <div style="text-align:center;margin-top:24px">
         <a href="${siteUrl}/mon-espace" style="background:#1d4ed8;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block">Accéder à mon espace →</a>
       </div>
-      <p style="color:#475569;margin-top:24px">Cordialement,<br><strong>L'équipe LumiNett</strong></p>`));
+      <p style="color:#475569;margin-top:24px">Cordialement,<br><strong>L'équipe Cleaning 16</strong></p>`));
 }
 
 async function sendSignatureNotifEmail(quote) {
@@ -349,6 +349,6 @@ io.on('connection', (socket) => {
 const PORT = process.env.PORT || 3001;
 httpServer.listen(PORT, async () => {
   await setupMailer();
-  console.log(`\n🚀  Serveur LumiNett démarré — http://localhost:${PORT}`);
+  console.log(`\n🚀  Serveur Cleaning 16 démarré — http://localhost:${PORT}`);
   console.log(`   Tableau de bord admin → http://localhost:${PORT}/admin\n`);
 });

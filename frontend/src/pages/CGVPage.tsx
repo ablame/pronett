@@ -17,7 +17,7 @@ export default function CGVPage() {
               <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center text-xl">🧹</div>
               <div>
                 <h1 className="text-2xl font-bold text-slate-900">Conditions Générales de Vente</h1>
-                <p className="text-slate-500 text-sm">LumiNett — Dernière mise à jour : {new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })}</p>
+                <p className="text-slate-500 text-sm">Cleaning 16 — Dernière mise à jour : {new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })}</p>
               </div>
             </div>
           </div>
@@ -26,12 +26,12 @@ export default function CGVPage() {
 
             <section>
               <h2 className="text-lg font-bold text-slate-800 mb-3 pb-2 border-b border-slate-100">Article 1 — Objet et champ d'application</h2>
-              <p className="text-sm leading-relaxed">Les présentes Conditions Générales de Vente (CGV) régissent l'ensemble des relations contractuelles entre <strong>LumiNett</strong> (ci-après « le Prestataire ») et toute personne physique ou morale (ci-après « le Client ») ayant recours à ses services de nettoyage professionnel. Toute commande ou signature d'un devis implique l'acceptation pleine et entière des présentes CGV.</p>
+              <p className="text-sm leading-relaxed">Les présentes Conditions Générales de Vente (CGV) régissent l'ensemble des relations contractuelles entre <strong>Cleaning 16</strong> (ci-après « le Prestataire ») et toute personne physique ou morale (ci-après « le Client ») ayant recours à ses services de nettoyage professionnel. Toute commande ou signature d'un devis implique l'acceptation pleine et entière des présentes CGV.</p>
             </section>
 
             <section>
               <h2 className="text-lg font-bold text-slate-800 mb-3 pb-2 border-b border-slate-100">Article 2 — Prestations proposées</h2>
-              <p className="text-sm leading-relaxed mb-3">LumiNett propose les services suivants :</p>
+              <p className="text-sm leading-relaxed mb-3">Cleaning 16 propose les services suivants :</p>
               <ul className="space-y-1.5 text-sm">
                 {[
                   'Nettoyage de conteneurs et bacs à ordures',
@@ -49,7 +49,7 @@ export default function CGVPage() {
             <section>
               <h2 className="text-lg font-bold text-slate-800 mb-3 pb-2 border-b border-slate-100">Article 3 — Tarifs et devis</h2>
               <p className="text-sm leading-relaxed mb-2">Les tarifs indiqués sur le site sont donnés à titre indicatif. Le prix définitif est celui figurant sur le devis accepté par le Client.</p>
-              <p className="text-sm leading-relaxed mb-2">Les prix sont exprimés en euros, hors taxes (HT) et toutes taxes comprises (TTC) selon le taux de TVA applicable. LumiNett se réserve le droit de modifier ses tarifs à tout moment, sans que cela affecte les devis déjà acceptés.</p>
+              <p className="text-sm leading-relaxed mb-2">Les prix sont exprimés en euros, hors taxes (HT) et toutes taxes comprises (TTC) selon le taux de TVA applicable. Cleaning 16 se réserve le droit de modifier ses tarifs à tout moment, sans que cela affecte les devis déjà acceptés.</p>
               <p className="text-sm leading-relaxed">Les suppléments éventuels (déplacements hors zone, matériaux spéciaux, accès difficile) seront précisés dans le devis.</p>
             </section>
 
@@ -82,7 +82,7 @@ export default function CGVPage() {
                 <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">•</span><strong>Entre 24h et 48h</strong> : facturation de 30% du montant du devis</li>
                 <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">•</span><strong>Moins de 24h ou le jour même</strong> : facturation de 50% du montant du devis</li>
               </ul>
-              <p className="text-sm leading-relaxed">En cas d'annulation de la part de LumiNett (force majeure, indisponibilité), aucune pénalité ne sera appliquée et une nouvelle date sera proposée au Client.</p>
+              <p className="text-sm leading-relaxed">En cas d'annulation de la part de Cleaning 16 (force majeure, indisponibilité), aucune pénalité ne sera appliquée et une nouvelle date sera proposée au Client.</p>
             </section>
 
             <section>
@@ -90,7 +90,7 @@ export default function CGVPage() {
               <p className="text-sm leading-relaxed mb-2">Le Client s'engage à :</p>
               <ul className="space-y-1.5 text-sm">
                 <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">•</span>Assurer l'accès aux locaux à l'heure convenue</li>
-                <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">•</span>Informer LumiNett de tout risque particulier (présence d'animaux, matériaux fragiles, zones inaccessibles)</li>
+                <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">•</span>Informer Cleaning 16 de tout risque particulier (présence d'animaux, matériaux fragiles, zones inaccessibles)</li>
                 <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">•</span>Mettre à disposition les ressources nécessaires (eau, électricité) si requis</li>
                 <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">•</span>Régler les sommes dues dans les délais convenus</li>
               </ul>
@@ -98,7 +98,7 @@ export default function CGVPage() {
 
             <section>
               <h2 className="text-lg font-bold text-slate-800 mb-3 pb-2 border-b border-slate-100">Article 8 — Obligations du Prestataire</h2>
-              <p className="text-sm leading-relaxed mb-2">LumiNett s'engage à :</p>
+              <p className="text-sm leading-relaxed mb-2">Cleaning 16 s'engage à :</p>
               <ul className="space-y-1.5 text-sm">
                 <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">•</span>Réaliser les prestations avec professionnalisme et dans les règles de l'art</li>
                 <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">•</span>Respecter les horaires et délais convenus</li>
@@ -110,18 +110,18 @@ export default function CGVPage() {
 
             <section>
               <h2 className="text-lg font-bold text-slate-800 mb-3 pb-2 border-b border-slate-100">Article 9 — Garantie satisfaction</h2>
-              <p className="text-sm leading-relaxed">En cas de résultat non conforme aux attentes exprimées dans le devis, LumiNett s'engage à effectuer une reprise gratuite de la prestation dans un délai de <strong>48 heures</strong> suivant la réclamation du Client, à condition que celle-ci soit formulée dans les 24h suivant la réalisation de la prestation.</p>
+              <p className="text-sm leading-relaxed">En cas de résultat non conforme aux attentes exprimées dans le devis, Cleaning 16 s'engage à effectuer une reprise gratuite de la prestation dans un délai de <strong>48 heures</strong> suivant la réclamation du Client, à condition que celle-ci soit formulée dans les 24h suivant la réalisation de la prestation.</p>
             </section>
 
             <section>
               <h2 className="text-lg font-bold text-slate-800 mb-3 pb-2 border-b border-slate-100">Article 10 — Responsabilité</h2>
-              <p className="text-sm leading-relaxed mb-2">La responsabilité de LumiNett ne saurait être engagée pour :</p>
+              <p className="text-sm leading-relaxed mb-2">La responsabilité de Cleaning 16 ne saurait être engagée pour :</p>
               <ul className="space-y-1.5 text-sm mb-3">
                 <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">•</span>Les dommages résultant d'informations incomplètes ou incorrectes fournies par le Client</li>
                 <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">•</span>Les cas de force majeure (intempéries, pandémie, grève, etc.)</li>
                 <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">•</span>L'usure normale des matériaux et équipements</li>
               </ul>
-              <p className="text-sm leading-relaxed">LumiNett dispose d'une assurance responsabilité civile professionnelle couvrant les dommages corporels et matériels survenus dans le cadre de ses interventions.</p>
+              <p className="text-sm leading-relaxed">Cleaning 16 dispose d'une assurance responsabilité civile professionnelle couvrant les dommages corporels et matériels survenus dans le cadre de ses interventions.</p>
             </section>
 
             <section>
@@ -138,23 +138,23 @@ export default function CGVPage() {
 
             <section>
               <h2 className="text-lg font-bold text-slate-800 mb-3 pb-2 border-b border-slate-100">Article 12 — Signature électronique</h2>
-              <p className="text-sm leading-relaxed">La signature électronique apposée via l'espace client de LumiNett constitue un accord ferme et contractuellement engageant au sens de la loi n° 2000-230 du 13 mars 2000 et du règlement européen eIDAS (n° 910/2014). Elle vaut acceptation des conditions du devis et des présentes CGV.</p>
+              <p className="text-sm leading-relaxed">La signature électronique apposée via l'espace client de Cleaning 16 constitue un accord ferme et contractuellement engageant au sens de la loi n° 2000-230 du 13 mars 2000 et du règlement européen eIDAS (n° 910/2014). Elle vaut acceptation des conditions du devis et des présentes CGV.</p>
             </section>
 
             <section>
               <h2 className="text-lg font-bold text-slate-800 mb-3 pb-2 border-b border-slate-100">Article 13 — Réclamations</h2>
-              <p className="text-sm leading-relaxed">Toute réclamation doit être adressée par email à <strong>topcleaning16@gmail.com</strong> ou par téléphone au <strong>06 10 85 49 18</strong>. LumiNett s'engage à traiter les réclamations dans un délai de <strong>48 heures ouvrées</strong>.</p>
+              <p className="text-sm leading-relaxed">Toute réclamation doit être adressée par email à <strong>topcleaning16@gmail.com</strong> ou par téléphone au <strong>06 10 85 49 18</strong>. Cleaning 16 s'engage à traiter les réclamations dans un délai de <strong>48 heures ouvrées</strong>.</p>
             </section>
 
             <section>
               <h2 className="text-lg font-bold text-slate-800 mb-3 pb-2 border-b border-slate-100">Article 14 — Droit applicable et juridiction</h2>
-              <p className="text-sm leading-relaxed">Les présentes CGV sont soumises au droit français. En cas de litige, une solution amiable sera recherchée en priorité. À défaut d'accord amiable, les tribunaux compétents du ressort du siège social de LumiNett seront saisis.</p>
+              <p className="text-sm leading-relaxed">Les présentes CGV sont soumises au droit français. En cas de litige, une solution amiable sera recherchée en priorité. À défaut d'accord amiable, les tribunaux compétents du ressort du siège social de Cleaning 16 seront saisis.</p>
             </section>
 
           </div>
 
           <div className="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-slate-400 text-xs">© {new Date().getFullYear()} LumiNett — Tous droits réservés</p>
+            <p className="text-slate-400 text-xs">© {new Date().getFullYear()} Cleaning 16 — Tous droits réservés</p>
             <div className="flex gap-3">
               <Link to="/" className="text-sm text-slate-500 hover:text-blue-600 font-medium transition-colors">Accueil</Link>
               <Link to="/commander" className="text-sm text-blue-600 hover:text-blue-800 font-semibold transition-colors">Commander →</Link>

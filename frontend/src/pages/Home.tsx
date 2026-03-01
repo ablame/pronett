@@ -147,7 +147,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <span className="text-blue-600 font-semibold text-sm uppercase tracking-widest">Nos engagements</span>
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mt-3 mb-8">Pourquoi choisir LumiNett ?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mt-3 mb-8">Pourquoi choisir Cleaning 16 ?</h2>
               <div className="space-y-6">
                 {[
                   { icon: <Shield size={20} />, title: 'Personnel certifié & assuré', desc: 'Toute notre équipe est formée et assurée pour intervenir chez vous en toute sécurité.' },
@@ -196,7 +196,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               { name: 'Sophie M.', role: 'Particulier', text: 'Équipe très professionnelle, ponctuelle et efficace. Mon appartement n\'a jamais été aussi propre. Je recommande vivement !' },
-              { name: 'Jean-Pierre D.', role: 'Gérant d\'entreprise', text: 'LumiNett entretient nos bureaux chaque semaine. Travail impeccable, discret et toujours dans les délais. Très satisfait.' },
+              { name: 'Jean-Pierre D.', role: 'Gérant d\'entreprise', text: 'Cleaning 16 entretient nos bureaux chaque semaine. Travail impeccable, discret et toujours dans les délais. Très satisfait.' },
               { name: 'Marie L.', role: 'Particulier', text: 'Nettoyage après travaux réalisé en une journée. Résultat parfait, rien à redire. Service top et prix honnête.' },
             ].map(({ name, role, text }) => (
               <div key={name} className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
@@ -264,7 +264,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
             <div>
               <div className="flex items-center gap-2 text-white font-bold text-xl mb-4">
-                <Logo size={28} /> LumiNett
+                <Logo size={28} /> Cleaning 16
               </div>
               <p className="text-sm leading-relaxed">
                 Service professionnel de nettoyage pour particuliers et entreprises. Qualité, réactivité et discrétion garanties.
@@ -311,7 +311,7 @@ export default function Home() {
             </div>
           </div>
           <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm">
-            <p>© {new Date().getFullYear()} LumiNett. Tous droits réservés.</p>
+            <p>© {new Date().getFullYear()} Cleaning 16. Tous droits réservés.</p>
             <div className="flex items-center gap-4">
               <Link to="/cgv" className="text-slate-500 hover:text-white transition-colors">
                 CGV

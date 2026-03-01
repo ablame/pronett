@@ -34,7 +34,7 @@ export default function Navbar() {
             isTransparent ? 'text-white' : 'text-blue-700'
           }`}>
             <Logo size={34} />
-            <span>LumiNett</span>
+            <span>Cleaning 16</span>
           </Link>
 
           {/* Desktop links */}
