@@ -91,17 +91,19 @@ async function setupMailer() {
   const adminEmail = process.env.ADMIN_EMAIL || 'topcleaning16@gmail.com';
 
   // Priorité 1 : Gmail App Password
-  // gmailUser = ADMIN_EMAIL (topcleaning16@gmail.com), jamais SMTP_USER
+  // Port 465 (SSL) car Railway bloque le port 587 (STARTTLS par défaut de service:'gmail')
   if (GMAIL_APP_PASS) {
     mailerFrom = adminEmail;
     transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true, // SSL obligatoire sur port 465
       auth: { user: mailerFrom, pass: GMAIL_APP_PASS },
     });
     // Vérification immédiate de la connexion
     transporter.verify((err) => {
-      if (err) console.error('❌  Gmail SMTP ERREUR:', err.message);
-      else console.log('✅  Gmail SMTP OK — envoi depuis', mailerFrom);
+      if (err) console.error('❌  Gmail SMTP ERREUR (port 465):', err.message);
+      else console.log('✅  Gmail SMTP OK (port 465) — envoi depuis', mailerFrom);
     });
     return;
   }

@@ -468,6 +468,7 @@ export default function AdminPage() {
   const [toastMsg, setToastMsg] = useState('');
   const [showQuoteForm, setShowQuoteForm] = useState(false);
   const [testEmailLoading, setTestEmailLoading] = useState(false);
+  const [testEmailResult, setTestEmailResult] = useState<{ ok: boolean; msg: string } | null>(null);
 
   const showToast = useCallback((msg: string) => {
     setToastMsg(msg); setTimeout(() => setToastMsg(''), 3500);
@@ -475,13 +476,17 @@ export default function AdminPage() {
 
   const handleTestEmail = async () => {
     setTestEmailLoading(true);
+    setTestEmailResult(null);
     try {
       const res = await apiFetch('/api/admin/test-email', { method: 'POST' });
       const data = await res.json();
-      if (res.ok) showToast('✅ ' + data.message);
-      else showToast('❌ Erreur : ' + data.error);
+      if (res.ok) {
+        setTestEmailResult({ ok: true, msg: data.message });
+      } else {
+        setTestEmailResult({ ok: false, msg: data.error || 'Erreur inconnue' });
+      }
     } catch {
-      showToast('❌ Impossible de contacter le serveur');
+      setTestEmailResult({ ok: false, msg: 'Impossible de contacter le serveur' });
     } finally {
       setTestEmailLoading(false);
     }
@@ -577,6 +582,14 @@ export default function AdminPage() {
           </div>
         </div>
       </header>
+
+      {/* Résultat test email — bannière persistante */}
+      {testEmailResult && (
+        <div className={`px-4 py-3 flex items-center justify-between text-sm font-medium ${testEmailResult.ok ? 'bg-emerald-50 text-emerald-800 border-b border-emerald-200' : 'bg-red-50 text-red-800 border-b border-red-200'}`}>
+          <span>{testEmailResult.ok ? '✅' : '❌'} {testEmailResult.msg}</span>
+          <button onClick={() => setTestEmailResult(null)} className="ml-4 opacity-60 hover:opacity-100 text-lg leading-none">×</button>
+        </div>
+      )}
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
         {/* Stats */}
