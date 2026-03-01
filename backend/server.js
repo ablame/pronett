@@ -257,6 +257,27 @@ async function sendSignatureNotifEmail(quote) {
       <p style="color:#64748b;font-size:13px">Signé le : ${quote.signedAt}</p>`));
 }
 
+// ─── Route formulaire de contact (public) ────────────────────────────────────
+app.post('/api/contact', async (req, res) => {
+  const { name, email, phone, message } = req.body;
+  if (!name || !email || !message) return res.status(400).json({ error: 'Champs requis manquants.' });
+  if (message.length > 2000) return res.status(400).json({ error: 'Message trop long.' });
+  const adminEmail = process.env.ADMIN_EMAIL || 'topcleaning16@gmail.com';
+  try {
+    await sendEmail(adminEmail, `Message de contact - ${name}`,
+      wrapEmail(`<h2 style="color:#1d4ed8;margin-top:0">Nouveau message de contact</h2>
+        <table style="width:100%;border-collapse:collapse;font-size:14px">
+          <tr style="background:#fff"><td style="padding:10px 14px;color:#64748b;font-weight:600;white-space:nowrap">Nom</td><td style="padding:10px 14px">${name}</td></tr>
+          <tr style="background:#f8fafc"><td style="padding:10px 14px;color:#64748b;font-weight:600">Email</td><td style="padding:10px 14px"><a href="mailto:${email}">${email}</a></td></tr>
+          ${phone ? `<tr style="background:#fff"><td style="padding:10px 14px;color:#64748b;font-weight:600">Téléphone</td><td style="padding:10px 14px"><a href="tel:${phone}">${phone}</a></td></tr>` : ''}
+          <tr style="background:#f8fafc"><td style="padding:10px 14px;color:#64748b;font-weight:600;vertical-align:top">Message</td><td style="padding:10px 14px;white-space:pre-wrap">${message}</td></tr>
+        </table>`));
+    res.json({ success: true });
+  } catch (e) {
+    res.status(500).json({ error: 'Erreur lors de l\'envoi. Réessayez ou appelez-nous directement.' });
+  }
+});
+
 // ─── Route test email (admin) ─────────────────────────────────────────────────
 app.post('/api/admin/test-email', adminAuth, async (req, res) => {
   const adminEmail = process.env.ADMIN_EMAIL || 'topcleaning16@gmail.com';

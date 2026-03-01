@@ -18,8 +18,9 @@ export default function Navbar() {
   const isTransparent = isHome && !scrolled && !open;
 
   const links = [
-    { to: '/#services', label: 'Nos services' },
-    { to: '/#comment', label: 'Comment ça marche' },
+    { to: '/#services', label: 'Services' },
+    { to: '/#apropos', label: 'À propos' },
+    { to: '/#faq', label: 'FAQ' },
     { to: '/#contact', label: 'Contact' },
   ];
 
