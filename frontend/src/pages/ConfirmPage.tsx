@@ -42,10 +42,22 @@ export default function ConfirmPage() {
           </div>
         </div>
 
-        {/* Info email */}
-        <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-700 mb-8">
-          <span className="font-semibold">📧 Un email de confirmation</span> a été envoyé à{' '}
-          <strong>{order.client_email}</strong>
+        {/* Info email + avertissement spam */}
+        <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-700 mb-4 text-left">
+          <p className="font-semibold mb-1">📧 Email de confirmation envoyé</p>
+          <p>
+            Un récapitulatif a été envoyé à <strong>{order.client_email}</strong>.
+          </p>
+        </div>
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-800 mb-8 text-left flex gap-3">
+          <span className="text-xl shrink-0">⚠️</span>
+          <div>
+            <p className="font-semibold mb-1">Vous ne trouvez pas l'email ?</p>
+            <p>
+              Vérifiez votre dossier <strong>Spam</strong> ou <strong>Courrier indésirable</strong>.
+              Les emails automatiques peuvent parfois y être redirigés.
+            </p>
+          </div>
         </div>
 
         {/* Actions */}

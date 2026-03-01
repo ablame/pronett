@@ -207,13 +207,13 @@ async function sendOrderEmails(order) {
 
   // allSettled : un échec d'email n'empêche pas l'autre d'être envoyé
   const [adminResult, clientResult] = await Promise.allSettled([
-    sendEmail(adminEmail, `🔔 Nouvelle commande #${order.id} — ${serviceLabel}`,
+    sendEmail(adminEmail, `Nouvelle commande #${order.id} - ${serviceLabel}`,
       wrapEmail(`<h2 style="color:#1d4ed8;margin-top:0">Commande #${order.id}</h2>
         <p style="color:#475569">Nouvelle demande reçue.</p>${table}
         <div style="margin-top:24px;text-align:center">
           <a href="${siteUrl}/admin" style="background:#1d4ed8;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block">Voir le tableau de bord →</a>
         </div>`)),
-    sendEmail(order.client_email, `✅ Demande reçue — Cleaning 16 #${order.id}`,
+    sendEmail(order.client_email, `Confirmation de votre demande - Cleaning 16 #${order.id}`,
       wrapEmail(`<p>Bonjour <strong>${order.client_name}</strong>,</p>
         <p style="color:#475569">Nous avons bien reçu votre demande de <strong>${serviceLabel}</strong>. Notre équipe vous contactera sous <strong>24h</strong>.</p>
         <div style="background:#eff6ff;border-left:4px solid #1d4ed8;padding:16px 20px;margin:20px 0;border-radius:0 8px 8px 0">
@@ -233,7 +233,7 @@ async function sendOrderEmails(order) {
 async function sendQuoteEmail(quote) {
   const siteUrl = process.env.SITE_URL || 'http://localhost:5173';
   const typeLabel = quote.type === 'facture' ? 'facture' : 'devis';
-  await sendEmail(quote.clientEmail, `📄 Nouveau ${typeLabel} disponible — Cleaning 16 (${quote.reference})`,
+  await sendEmail(quote.clientEmail, `Votre ${typeLabel} - Cleaning 16 (${quote.reference})`,
     wrapEmail(`<p>Bonjour <strong>${quote.clientName}</strong>,</p>
       <p style="color:#475569">Vous avez reçu un nouveau <strong>${typeLabel}</strong> de Cleaning 16.</p>
       <div style="background:#eff6ff;border-left:4px solid #1d4ed8;padding:16px 20px;margin:20px 0;border-radius:0 8px 8px 0">
@@ -250,7 +250,7 @@ async function sendQuoteEmail(quote) {
 
 async function sendSignatureNotifEmail(quote) {
   const adminEmail = process.env.ADMIN_EMAIL || 'topcleaning16@gmail.com';
-  await sendEmail(adminEmail, `✅ Devis ${quote.reference} signé par ${quote.clientName}`,
+  await sendEmail(adminEmail, `Devis signe - ${quote.reference} - ${quote.clientName}`,
     wrapEmail(`<h2 style="color:#059669;margin-top:0">Devis accepté et signé</h2>
       <p style="color:#475569">Le devis <strong>${quote.reference}</strong> a été signé électroniquement par <strong>${quote.clientName}</strong> (${quote.clientEmail}).</p>
       <p style="color:#475569">Montant : <strong>${Number(quote.total).toFixed(2)} €</strong></p>
