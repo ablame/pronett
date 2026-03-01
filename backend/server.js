@@ -86,24 +86,46 @@ let resendClient = null;
 let transporter = null;
 
 async function setupMailer() {
-  const { RESEND_API_KEY, SMTP_HOST, SMTP_USER, SMTP_PASS, SMTP_PORT, SMTP_SECURE } = process.env;
-  if (RESEND_API_KEY) {
-    resendClient = new Resend(RESEND_API_KEY);
-    console.log('📧  Resend configuré (envoi HTTP)');
-  } else if (SMTP_HOST && SMTP_USER && SMTP_PASS) {
+  const { RESEND_API_KEY, SMTP_HOST, SMTP_USER, SMTP_PASS, SMTP_PORT, SMTP_SECURE, GMAIL_APP_PASS } = process.env;
+
+  // Priorité 1 : Gmail App Password (variable unique, la plus simple)
+  if (GMAIL_APP_PASS) {
+    const gmailUser = process.env.SMTP_USER || process.env.ADMIN_EMAIL || 'topcleaning16@gmail.com';
     transporter = nodemailer.createTransport({
-      host: SMTP_HOST, port: parseInt(SMTP_PORT || '587'),
-      secure: SMTP_SECURE === 'true', auth: { user: SMTP_USER, pass: SMTP_PASS },
+      service: 'gmail',
+      auth: { user: gmailUser, pass: GMAIL_APP_PASS },
+    });
+    console.log('📧  Gmail SMTP configuré pour', gmailUser);
+    return;
+  }
+
+  // Priorité 2 : SMTP personnalisé (HOST + USER + PASS)
+  if (SMTP_HOST && SMTP_USER && SMTP_PASS) {
+    transporter = nodemailer.createTransport({
+      host: SMTP_HOST,
+      port: parseInt(SMTP_PORT || '465'),
+      secure: SMTP_SECURE !== 'false', // SSL par défaut (port 465)
+      auth: { user: SMTP_USER, pass: SMTP_PASS },
     });
     console.log('📧  SMTP configuré avec', SMTP_HOST);
-  } else {
-    const testAccount = await nodemailer.createTestAccount();
-    transporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email', port: 587, secure: false,
-      auth: { user: testAccount.user, pass: testAccount.pass },
-    });
-    console.log('📧  Mode test email — compte:', testAccount.user);
+    return;
   }
+
+  // Priorité 3 : Resend (nécessite un domaine vérifié sur resend.com)
+  if (RESEND_API_KEY) {
+    resendClient = new Resend(RESEND_API_KEY);
+    console.log('📧  Resend configuré — assurez-vous d\'avoir un domaine vérifié sur resend.com');
+    return;
+  }
+
+  // Fallback : Ethereal (test uniquement, emails non livrés en production)
+  const testAccount = await nodemailer.createTestAccount();
+  transporter = nodemailer.createTransport({
+    host: 'smtp.ethereal.email', port: 587, secure: false,
+    auth: { user: testAccount.user, pass: testAccount.pass },
+  });
+  console.log('⚠️  Mode test email (Ethereal) — emails non livrés en prod');
+  console.log('   Compte Ethereal:', testAccount.user);
 }
 
 function wrapEmail(content) {
@@ -118,14 +140,29 @@ function wrapEmail(content) {
 }
 
 async function sendEmail(to, subject, html) {
-  const from = 'Cleaning 16 <onboarding@resend.dev>';
   if (resendClient) {
-    const r = await resendClient.emails.send({ from, to, subject, html });
-    console.log(`📧  Email → ${to}:`, r?.data?.id || r?.error);
+    const r = await resendClient.emails.send({
+      from: 'Cleaning 16 <onboarding@resend.dev>',
+      to, subject, html,
+    });
+    // Lancer l'erreur si Resend échoue (évite les échecs silencieux)
+    if (r?.error) {
+      const msg = typeof r.error === 'object' ? JSON.stringify(r.error) : r.error;
+      console.error(`❌  Resend erreur → ${to}:`, msg);
+      throw new Error(`Resend: ${msg}`);
+    }
+    console.log(`📧  Email envoyé → ${to} (Resend id: ${r?.data?.id})`);
   } else if (transporter) {
-    const info = await transporter.sendMail({ from: '"Cleaning 16" <noreply@cleaning16.fr>', to, subject, html });
+    const senderAddr = process.env.SMTP_USER || process.env.ADMIN_EMAIL || 'topcleaning16@gmail.com';
+    const info = await transporter.sendMail({
+      from: `"Cleaning 16" <${senderAddr}>`,
+      to, subject, html,
+    });
     const preview = nodemailer.getTestMessageUrl(info);
-    if (preview) console.log(`📧  Email → ${to}:`, preview);
+    if (preview) console.log(`📧  Email test → ${to}:`, preview);
+    else console.log(`📧  Email envoyé → ${to}`);
+  } else {
+    console.warn(`⚠️  Email non envoyé → ${to} : aucun service configuré`);
   }
 }
 
