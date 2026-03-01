@@ -26,6 +26,14 @@ const io = new Server(httpServer, {
 app.use(cors({ origin: ALLOWED_ORIGINS }));
 app.use(express.json());
 
+// ─── Redirection HTTP → HTTPS (production uniquement) ─────────────────────────
+app.use((req, res, next) => {
+  if (req.headers['x-forwarded-proto'] === 'http') {
+    return res.redirect(301, 'https://' + req.headers.host + req.url);
+  }
+  next();
+});
+
 // ─── Labels des services ──────────────────────────────────────────────────────
 const SERVICE_LABELS = {
   conteneurs: 'Nettoyage de conteneurs',
