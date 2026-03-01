@@ -467,10 +467,25 @@ export default function AdminPage() {
   const [notifBadge, setNotifBadge] = useState(0);
   const [toastMsg, setToastMsg] = useState('');
   const [showQuoteForm, setShowQuoteForm] = useState(false);
+  const [testEmailLoading, setTestEmailLoading] = useState(false);
 
   const showToast = useCallback((msg: string) => {
     setToastMsg(msg); setTimeout(() => setToastMsg(''), 3500);
   }, []);
+
+  const handleTestEmail = async () => {
+    setTestEmailLoading(true);
+    try {
+      const res = await apiFetch('/api/admin/test-email', { method: 'POST' });
+      const data = await res.json();
+      if (res.ok) showToast('✅ ' + data.message);
+      else showToast('❌ Erreur : ' + data.error);
+    } catch {
+      showToast('❌ Impossible de contacter le serveur');
+    } finally {
+      setTestEmailLoading(false);
+    }
+  };
 
   const fetchData = useCallback(async () => {
     const [ordersRes, statsRes] = await Promise.all([apiFetch('/api/orders'), apiFetch('/api/stats')]);
@@ -554,6 +569,10 @@ export default function AdminPage() {
               {notifBadge > 0 && <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">{notifBadge > 9 ? '9+' : notifBadge}</span>}
             </button>
             <button onClick={fetchData} className="p-2 hover:bg-white/15 rounded-xl transition-colors" title="Rafraîchir"><RefreshCw size={18} /></button>
+            <button onClick={handleTestEmail} disabled={testEmailLoading}
+              className="flex items-center gap-1.5 text-sm px-3 py-2 hover:bg-white/15 rounded-xl transition-colors disabled:opacity-50" title="Envoyer un email de test">
+              <Mail size={16} /> {testEmailLoading ? '…' : 'Test email'}
+            </button>
             <button onClick={handleLogout} className="flex items-center gap-1.5 text-sm px-3 py-2 hover:bg-white/15 rounded-xl transition-colors"><LogOut size={16} /> Déconnexion</button>
           </div>
         </div>

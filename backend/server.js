@@ -84,48 +84,60 @@ function clientAuth(req, res, next) {
 // ─── Mailer ───────────────────────────────────────────────────────────────────
 let resendClient = null;
 let transporter = null;
+let mailerFrom = 'topcleaning16@gmail.com'; // adresse d'envoi résolue au démarrage
 
 async function setupMailer() {
   const { RESEND_API_KEY, SMTP_HOST, SMTP_USER, SMTP_PASS, SMTP_PORT, SMTP_SECURE, GMAIL_APP_PASS } = process.env;
+  const adminEmail = process.env.ADMIN_EMAIL || 'topcleaning16@gmail.com';
 
-  // Priorité 1 : Gmail App Password (variable unique, la plus simple)
+  // Priorité 1 : Gmail App Password
+  // gmailUser = ADMIN_EMAIL (topcleaning16@gmail.com), jamais SMTP_USER
   if (GMAIL_APP_PASS) {
-    const gmailUser = process.env.SMTP_USER || process.env.ADMIN_EMAIL || 'topcleaning16@gmail.com';
+    mailerFrom = adminEmail;
     transporter = nodemailer.createTransport({
       service: 'gmail',
-      auth: { user: gmailUser, pass: GMAIL_APP_PASS },
+      auth: { user: mailerFrom, pass: GMAIL_APP_PASS },
     });
-    console.log('📧  Gmail SMTP configuré pour', gmailUser);
+    // Vérification immédiate de la connexion
+    transporter.verify((err) => {
+      if (err) console.error('❌  Gmail SMTP ERREUR:', err.message);
+      else console.log('✅  Gmail SMTP OK — envoi depuis', mailerFrom);
+    });
     return;
   }
 
   // Priorité 2 : SMTP personnalisé (HOST + USER + PASS)
   if (SMTP_HOST && SMTP_USER && SMTP_PASS) {
+    mailerFrom = SMTP_USER;
     transporter = nodemailer.createTransport({
       host: SMTP_HOST,
       port: parseInt(SMTP_PORT || '465'),
-      secure: SMTP_SECURE !== 'false', // SSL par défaut (port 465)
+      secure: SMTP_SECURE !== 'false',
       auth: { user: SMTP_USER, pass: SMTP_PASS },
     });
-    console.log('📧  SMTP configuré avec', SMTP_HOST);
+    transporter.verify((err) => {
+      if (err) console.error('❌  SMTP ERREUR:', err.message);
+      else console.log('✅  SMTP OK —', SMTP_HOST);
+    });
     return;
   }
 
   // Priorité 3 : Resend (nécessite un domaine vérifié sur resend.com)
   if (RESEND_API_KEY) {
     resendClient = new Resend(RESEND_API_KEY);
-    console.log('📧  Resend configuré — assurez-vous d\'avoir un domaine vérifié sur resend.com');
+    console.log('📧  Resend configuré (domaine vérifié requis sur resend.com)');
     return;
   }
 
-  // Fallback : Ethereal (test uniquement, emails non livrés en production)
+  // Fallback : Ethereal (emails non livrés, uniquement pour tests locaux)
   const testAccount = await nodemailer.createTestAccount();
+  mailerFrom = testAccount.user;
   transporter = nodemailer.createTransport({
     host: 'smtp.ethereal.email', port: 587, secure: false,
     auth: { user: testAccount.user, pass: testAccount.pass },
   });
-  console.log('⚠️  Mode test email (Ethereal) — emails non livrés en prod');
-  console.log('   Compte Ethereal:', testAccount.user);
+  console.log('⚠️  Mode test Ethereal — emails NON livrés en production');
+  console.log('   Compte:', testAccount.user);
 }
 
 function wrapEmail(content) {
@@ -145,17 +157,15 @@ async function sendEmail(to, subject, html) {
       from: 'Cleaning 16 <onboarding@resend.dev>',
       to, subject, html,
     });
-    // Lancer l'erreur si Resend échoue (évite les échecs silencieux)
     if (r?.error) {
       const msg = typeof r.error === 'object' ? JSON.stringify(r.error) : r.error;
       console.error(`❌  Resend erreur → ${to}:`, msg);
       throw new Error(`Resend: ${msg}`);
     }
-    console.log(`📧  Email envoyé → ${to} (Resend id: ${r?.data?.id})`);
+    console.log(`📧  Email envoyé → ${to} (Resend ${r?.data?.id})`);
   } else if (transporter) {
-    const senderAddr = process.env.SMTP_USER || process.env.ADMIN_EMAIL || 'topcleaning16@gmail.com';
     const info = await transporter.sendMail({
-      from: `"Cleaning 16" <${senderAddr}>`,
+      from: `"Cleaning 16" <${mailerFrom}>`,
       to, subject, html,
     });
     const preview = nodemailer.getTestMessageUrl(info);
@@ -233,6 +243,20 @@ async function sendSignatureNotifEmail(quote) {
       <p style="color:#475569">Montant : <strong>${Number(quote.total).toFixed(2)} €</strong></p>
       <p style="color:#64748b;font-size:13px">Signé le : ${quote.signedAt}</p>`));
 }
+
+// ─── Route test email (admin) ─────────────────────────────────────────────────
+app.post('/api/admin/test-email', adminAuth, async (req, res) => {
+  const adminEmail = process.env.ADMIN_EMAIL || 'topcleaning16@gmail.com';
+  try {
+    await sendEmail(adminEmail, '✅ Test email — Cleaning 16',
+      wrapEmail(`<h2 style="color:#1d4ed8;margin-top:0">Test réussi !</h2>
+        <p style="color:#475569">La configuration email fonctionne correctement.</p>
+        <p style="color:#64748b;font-size:13px">Envoyé depuis : ${mailerFrom}<br>Destinataire : ${adminEmail}</p>`));
+    res.json({ success: true, message: `Email de test envoyé à ${adminEmail}` });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
 
 // ─── Routes Auth Admin ────────────────────────────────────────────────────────
 app.post('/api/auth/login', async (req, res) => {
