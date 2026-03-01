@@ -13,7 +13,7 @@ const db = require('./db');
 
 const app = express();
 const httpServer = createServer(app);
-const JWT_SECRET = process.env.JWT_SECRET || 'luminett-jwt-secret-2026';
+const JWT_SECRET = process.env.JWT_SECRET || 'cleaning16-jwt-secret-2026';
 
 const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',')

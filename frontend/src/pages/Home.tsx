@@ -310,17 +310,23 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm">
-            <p>© {new Date().getFullYear()} Cleaning 16. Tous droits réservés.</p>
-            <div className="flex items-center gap-4">
+          <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm">
+            <p className="text-slate-500">© {new Date().getFullYear()} Cleaning 16 — SIRET 943 904 201 00010</p>
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <Link to="/mentions-legales" className="text-slate-500 hover:text-white transition-colors">
+                Mentions légales
+              </Link>
+              <Link to="/politique-confidentialite" className="text-slate-500 hover:text-white transition-colors">
+                Confidentialité
+              </Link>
               <Link to="/cgv" className="text-slate-500 hover:text-white transition-colors">
                 CGV
               </Link>
               <Link to="/mon-espace" className="text-slate-500 hover:text-white transition-colors">
-                Mon espace client
+                Espace client
               </Link>
               <Link to="/admin" className="text-slate-700 hover:text-slate-500 transition-colors text-xs">
-                Espace Pro
+                Pro
               </Link>
             </div>
           </div>
