@@ -82,21 +82,29 @@ function clientAuth(req, res, next) {
 }
 
 // ─── Mailer ───────────────────────────────────────────────────────────────────
+let brevoApiKey = null;
 let resendClient = null;
 let transporter = null;
 let mailerFrom = 'topcleaning16@gmail.com'; // adresse d'envoi résolue au démarrage
 
 async function setupMailer() {
-  // Priorité 1 : Resend (HTTP port 443 — fonctionne sur Railway, jamais bloqué)
+  // Priorité 1 : Brevo (HTTP/443, vérification email simple sans domaine requis)
+  if (process.env.BREVO_API_KEY) {
+    brevoApiKey = process.env.BREVO_API_KEY;
+    mailerFrom = process.env.BREVO_FROM_EMAIL || process.env.ADMIN_EMAIL || 'topcleaning16@gmail.com';
+    console.log('✅  Brevo configuré — envoi depuis', mailerFrom);
+    return;
+  }
+
+  // Priorité 2 : Resend (HTTP/443 — nécessite un domaine vérifié sur resend.com)
   if (process.env.RESEND_API_KEY) {
     resendClient = new Resend(process.env.RESEND_API_KEY);
-    // RESEND_FROM_EMAIL = adresse vérifiée sur resend.com (optionnel, sinon onboarding@resend.dev)
     mailerFrom = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
     console.log('✅  Resend configuré — envoi depuis', mailerFrom);
     return;
   }
 
-  // Priorité 2 : SMTP personnalisé (non recommandé sur Railway — ports souvent bloqués)
+  // Priorité 3 : SMTP personnalisé (non recommandé sur Railway — ports souvent bloqués)
   if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
     mailerFrom = process.env.SMTP_USER;
     transporter = nodemailer.createTransport({
@@ -138,7 +146,26 @@ function wrapEmail(content) {
 }
 
 async function sendEmail(to, subject, html) {
-  if (resendClient) {
+  if (brevoApiKey) {
+    const resp = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'api-key': brevoApiKey },
+      body: JSON.stringify({
+        sender: { name: 'Cleaning 16', email: mailerFrom },
+        to: [{ email: to }],
+        subject,
+        htmlContent: html,
+      }),
+    });
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      const msg = JSON.stringify(err);
+      console.error(`❌  Brevo erreur → ${to}:`, msg);
+      throw new Error(`Brevo: ${msg}`);
+    }
+    const result = await resp.json().catch(() => ({}));
+    console.log(`📧  Email envoyé → ${to} (Brevo ${result?.messageId || ''})`);
+  } else if (resendClient) {
     const fromAddr = mailerFrom.includes('@') && !mailerFrom.includes('onboarding@resend.dev')
       ? `Cleaning 16 <${mailerFrom}>`
       : 'Cleaning 16 <onboarding@resend.dev>';
