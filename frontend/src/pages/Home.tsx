@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { CheckCircle, Clock, Star, Shield, Phone, Mail, MapPin, ArrowRight, ChevronRight, MessageSquare } from 'lucide-react';
 import Navbar from '../components/Navbar';
+import Logo from '../components/Logo';
 import { SERVICES } from '../types';
 
 export default function Home() {
@@ -263,7 +264,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
             <div>
               <div className="flex items-center gap-2 text-white font-bold text-xl mb-4">
-                <span>🧹</span> LumiNett
+                <Logo size={28} /> LumiNett
               </div>
               <p className="text-sm leading-relaxed">
                 Service professionnel de nettoyage pour particuliers et entreprises. Qualité, réactivité et discrétion garanties.

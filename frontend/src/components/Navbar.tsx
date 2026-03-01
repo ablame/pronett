@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Phone, UserCircle } from 'lucide-react';
+import Logo from './Logo';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -32,8 +33,8 @@ export default function Navbar() {
           <Link to="/" className={`flex items-center gap-2 font-bold text-xl transition-colors ${
             isTransparent ? 'text-white' : 'text-blue-700'
           }`}>
-            <span className="text-2xl">🧹</span>
-            <span>ProNett</span>
+            <Logo size={34} />
+            <span>LumiNett</span>
           </Link>
 
           {/* Desktop links */}
