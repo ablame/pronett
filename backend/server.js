@@ -182,7 +182,8 @@ async function sendOrderEmails(order) {
     ${order.notes ? tr('Notes', order.notes, '#fff') : ''}
   </table>`;
 
-  await Promise.all([
+  // allSettled : un échec d'email n'empêche pas l'autre d'être envoyé
+  const [adminResult, clientResult] = await Promise.allSettled([
     sendEmail(adminEmail, `🔔 Nouvelle commande #${order.id} — ${serviceLabel}`,
       wrapEmail(`<h2 style="color:#1d4ed8;margin-top:0">Commande #${order.id}</h2>
         <p style="color:#475569">Nouvelle demande reçue.</p>${table}
@@ -200,6 +201,10 @@ async function sendOrderEmails(order) {
         </div>
         <p style="color:#475569">Cordialement,<br><strong>L'équipe Cleaning 16</strong></p>`)),
   ]);
+  if (adminResult.status === 'rejected')
+    console.error('❌ Email admin non envoyé:', adminResult.reason?.message || adminResult.reason);
+  if (clientResult.status === 'rejected')
+    console.error('❌ Email client non envoyé:', clientResult.reason?.message || clientResult.reason);
 }
 
 async function sendQuoteEmail(quote) {
