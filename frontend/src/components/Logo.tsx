@@ -4,11 +4,10 @@ interface LogoProps {
 }
 
 /**
- * Logo Cleaning 16 — Carré arrondi bleu dégradé avec L et étoile de lumière.
- * Lumi = lumière (sparkle), Nett = propre (L).
+ * Logo Cleaning 16 — Carré arrondi bleu dégradé avec C stylisé.
  */
 export default function Logo({ size = 36, className = '' }: LogoProps) {
-  const id = `lnGrad_${size}`;
+  const id = `c16Grad_${size}`;
   return (
     <svg
       width={size}
@@ -22,28 +21,14 @@ export default function Logo({ size = 36, className = '' }: LogoProps) {
       {/* Fond carré arrondi dégradé bleu */}
       <rect width="40" height="40" rx="11" fill={`url(#${id})`} />
 
-      {/* Lettre L stylisée (blanche) */}
+      {/* Lettre C stylisée (blanche) — arc semi-circulaire ouvert à droite */}
       <path
-        d="M12 11 L12 30 L28 30"
+        d="M27 13 A10 10 0 1 0 27 28"
         stroke="white"
         strokeWidth="3.8"
         strokeLinecap="round"
-        strokeLinejoin="round"
+        fill="none"
       />
-
-      {/* Étoile / sparkle (Lumi = lumière) — coin haut droit */}
-      <g transform="translate(24.5, 9.5)">
-        {/* Rayons longs */}
-        <line x1="4" y1="0" x2="4" y2="8" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-        <line x1="0" y1="4" x2="8" y2="4" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-        {/* Rayons diagonaux courts */}
-        <line x1="1.2" y1="1.2" x2="2.9" y2="2.9" stroke="white" strokeWidth="1.2" strokeLinecap="round" opacity="0.8" />
-        <line x1="6.8" y1="1.2" x2="5.1" y2="2.9" stroke="white" strokeWidth="1.2" strokeLinecap="round" opacity="0.8" />
-        <line x1="1.2" y1="6.8" x2="2.9" y2="5.1" stroke="white" strokeWidth="1.2" strokeLinecap="round" opacity="0.8" />
-        <line x1="6.8" y1="6.8" x2="5.1" y2="5.1" stroke="white" strokeWidth="1.2" strokeLinecap="round" opacity="0.8" />
-        {/* Point central */}
-        <circle cx="4" cy="4" r="1.5" fill="white" />
-      </g>
 
       <defs>
         <linearGradient id={id} x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
