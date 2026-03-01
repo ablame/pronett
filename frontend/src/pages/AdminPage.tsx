@@ -477,16 +477,23 @@ export default function AdminPage() {
   const handleTestEmail = async () => {
     setTestEmailLoading(true);
     setTestEmailResult(null);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 20000); // 20s max
     try {
-      const res = await apiFetch('/api/admin/test-email', { method: 'POST' });
+      const res = await apiFetch('/api/admin/test-email', { method: 'POST', signal: controller.signal });
+      clearTimeout(timeout);
       const data = await res.json();
       if (res.ok) {
         setTestEmailResult({ ok: true, msg: data.message });
       } else {
         setTestEmailResult({ ok: false, msg: data.error || 'Erreur inconnue' });
       }
-    } catch {
-      setTestEmailResult({ ok: false, msg: 'Impossible de contacter le serveur' });
+    } catch (e: any) {
+      clearTimeout(timeout);
+      const msg = e?.name === 'AbortError'
+        ? 'Timeout (20s) — vérifiez la config email Railway'
+        : 'Erreur réseau : ' + (e?.message || e);
+      setTestEmailResult({ ok: false, msg });
     } finally {
       setTestEmailLoading(false);
     }

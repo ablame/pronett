@@ -87,51 +87,35 @@ let transporter = null;
 let mailerFrom = 'topcleaning16@gmail.com'; // adresse d'envoi résolue au démarrage
 
 async function setupMailer() {
-  const { RESEND_API_KEY, SMTP_HOST, SMTP_USER, SMTP_PASS, SMTP_PORT, SMTP_SECURE, GMAIL_APP_PASS } = process.env;
-  const adminEmail = process.env.ADMIN_EMAIL || 'topcleaning16@gmail.com';
-
-  // Priorité 1 : Gmail App Password
-  // Port 465 (SSL) car Railway bloque le port 587 (STARTTLS par défaut de service:'gmail')
-  if (GMAIL_APP_PASS) {
-    mailerFrom = adminEmail;
-    transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true, // SSL obligatoire sur port 465
-      auth: { user: mailerFrom, pass: GMAIL_APP_PASS },
-    });
-    // Vérification immédiate de la connexion
-    transporter.verify((err) => {
-      if (err) console.error('❌  Gmail SMTP ERREUR (port 465):', err.message);
-      else console.log('✅  Gmail SMTP OK (port 465) — envoi depuis', mailerFrom);
-    });
+  // Priorité 1 : Resend (HTTP port 443 — fonctionne sur Railway, jamais bloqué)
+  if (process.env.RESEND_API_KEY) {
+    resendClient = new Resend(process.env.RESEND_API_KEY);
+    // RESEND_FROM_EMAIL = adresse vérifiée sur resend.com (optionnel, sinon onboarding@resend.dev)
+    mailerFrom = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
+    console.log('✅  Resend configuré — envoi depuis', mailerFrom);
     return;
   }
 
-  // Priorité 2 : SMTP personnalisé (HOST + USER + PASS)
-  if (SMTP_HOST && SMTP_USER && SMTP_PASS) {
-    mailerFrom = SMTP_USER;
+  // Priorité 2 : SMTP personnalisé (non recommandé sur Railway — ports souvent bloqués)
+  if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+    mailerFrom = process.env.SMTP_USER;
     transporter = nodemailer.createTransport({
-      host: SMTP_HOST,
-      port: parseInt(SMTP_PORT || '465'),
-      secure: SMTP_SECURE !== 'false',
-      auth: { user: SMTP_USER, pass: SMTP_PASS },
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT || '465'),
+      secure: process.env.SMTP_SECURE !== 'false',
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 15000,
+      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
     });
     transporter.verify((err) => {
       if (err) console.error('❌  SMTP ERREUR:', err.message);
-      else console.log('✅  SMTP OK —', SMTP_HOST);
+      else console.log('✅  SMTP OK —', process.env.SMTP_HOST);
     });
     return;
   }
 
-  // Priorité 3 : Resend (nécessite un domaine vérifié sur resend.com)
-  if (RESEND_API_KEY) {
-    resendClient = new Resend(RESEND_API_KEY);
-    console.log('📧  Resend configuré (domaine vérifié requis sur resend.com)');
-    return;
-  }
-
-  // Fallback : Ethereal (emails non livrés, uniquement pour tests locaux)
+  // Fallback : Ethereal (test local uniquement, non livré en production)
   const testAccount = await nodemailer.createTestAccount();
   mailerFrom = testAccount.user;
   transporter = nodemailer.createTransport({
@@ -139,7 +123,7 @@ async function setupMailer() {
     auth: { user: testAccount.user, pass: testAccount.pass },
   });
   console.log('⚠️  Mode test Ethereal — emails NON livrés en production');
-  console.log('   Compte:', testAccount.user);
+  console.log('   Prévisualisation:', 'https://ethereal.email');
 }
 
 function wrapEmail(content) {
@@ -155,10 +139,10 @@ function wrapEmail(content) {
 
 async function sendEmail(to, subject, html) {
   if (resendClient) {
-    const r = await resendClient.emails.send({
-      from: 'Cleaning 16 <onboarding@resend.dev>',
-      to, subject, html,
-    });
+    const fromAddr = mailerFrom.includes('@') && !mailerFrom.includes('onboarding@resend.dev')
+      ? `Cleaning 16 <${mailerFrom}>`
+      : 'Cleaning 16 <onboarding@resend.dev>';
+    const r = await resendClient.emails.send({ from: fromAddr, to, subject, html });
     if (r?.error) {
       const msg = typeof r.error === 'object' ? JSON.stringify(r.error) : r.error;
       console.error(`❌  Resend erreur → ${to}:`, msg);
