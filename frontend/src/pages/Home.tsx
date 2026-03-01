@@ -155,7 +155,7 @@ export default function Home() {
               <div className="flex flex-wrap gap-6">
                 {[
                   { value: '200+', label: 'Clients satisfaits' },
-                  { value: '5 ans', label: 'D\'expérience' },
+                  { value: '10 ans', label: 'D\'expérience' },
                   { value: '6j/7', label: 'Disponibilité' },
                 ].map(({ value, label }) => (
                   <div key={label} className="text-center">
