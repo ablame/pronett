@@ -131,7 +131,7 @@ async function sendEmail(to, subject, html) {
 
 async function sendOrderEmails(order) {
   const serviceLabel = SERVICE_LABELS[order.service] || order.service;
-  const adminEmail = process.env.ADMIN_EMAIL || 'admin@luminett.fr';
+  const adminEmail = process.env.ADMIN_EMAIL || 'topcleaning16@gmail.com';
   const siteUrl = process.env.SITE_URL || 'http://localhost:5173';
 
   const tr = (l, v, bg) => `<tr style="background:${bg}"><td style="padding:10px 14px;color:#64748b;font-weight:600;white-space:nowrap">${l}</td><td style="padding:10px 14px">${v}</td></tr>`;
@@ -154,7 +154,7 @@ async function sendOrderEmails(order) {
         </div>`)),
     sendEmail(order.client_email, `✅ Demande reçue — LumiNett #${order.id}`,
       wrapEmail(`<p>Bonjour <strong>${order.client_name}</strong>,</p>
-        <p style="color:#475569">Nous avons bien reçu votre demande de <strong>${serviceLabel}</strong>. Notre équipe vous contactera sous <strong>48h</strong>.</p>
+        <p style="color:#475569">Nous avons bien reçu votre demande de <strong>${serviceLabel}</strong>. Notre équipe vous contactera sous <strong>24h</strong>.</p>
         <div style="background:#eff6ff;border-left:4px solid #1d4ed8;padding:16px 20px;margin:20px 0;border-radius:0 8px 8px 0">
           <p style="margin:0 0 8px;color:#1e40af;font-weight:700">Récapitulatif</p>
           <p style="margin:4px 0;color:#334155">📅 Date : <strong>${order.date}</strong></p>
@@ -184,7 +184,7 @@ async function sendQuoteEmail(quote) {
 }
 
 async function sendSignatureNotifEmail(quote) {
-  const adminEmail = process.env.ADMIN_EMAIL || 'admin@luminett.fr';
+  const adminEmail = process.env.ADMIN_EMAIL || 'topcleaning16@gmail.com';
   await sendEmail(adminEmail, `✅ Devis ${quote.reference} signé par ${quote.clientName}`,
     wrapEmail(`<h2 style="color:#059669;margin-top:0">Devis accepté et signé</h2>
       <p style="color:#475569">Le devis <strong>${quote.reference}</strong> a été signé électroniquement par <strong>${quote.clientName}</strong> (${quote.clientEmail}).</p>
@@ -199,7 +199,7 @@ app.post('/api/auth/login', async (req, res) => {
   if (!rl.ok) return res.status(429).json({ error: rl.message });
 
   const { email, password } = req.body;
-  const adminEmail = (process.env.ADMIN_EMAIL || 'admin@luminett.fr').toLowerCase();
+  const adminEmail = (process.env.ADMIN_EMAIL || 'topcleaning16@gmail.com').toLowerCase();
   const adminPassword = process.env.ADMIN_PASSWORD || 'Admin2024!';
 
   if ((email || '').toLowerCase() !== adminEmail || password !== adminPassword) {

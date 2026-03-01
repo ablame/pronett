@@ -18,7 +18,7 @@ export default function Home() {
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 bg-white/15 text-white text-sm font-medium px-4 py-2 rounded-full mb-6 backdrop-blur-sm border border-white/20">
               <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-              Service disponible 6j/7 — Devis sous 48h
+              Service disponible 6j/7 — Devis sous 24h
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
               Un espace propre,
@@ -45,7 +45,7 @@ export default function Home() {
                 { icon: '⭐', text: '+200 clients satisfaits' },
                 { icon: '✅', text: 'Résultat garanti' },
                 { icon: '🔒', text: 'Personnel assuré' },
-                { icon: '⚡', text: 'Réponse sous 48h' },
+                { icon: '⚡', text: 'Réponse sous 24h' },
               ].map(({ icon, text }) => (
                 <div key={text} className="flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white text-sm px-4 py-2 rounded-full border border-white/15">
                   <span>{icon}</span><span>{text}</span>
@@ -242,8 +242,8 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
             {[
               { icon: <Phone size={24} />, title: 'Téléphone', value: '06 10 85 49 18', href: 'tel:0610854918', color: 'bg-blue-100 text-blue-600' },
-              { icon: <Mail size={24} />, title: 'Email', value: 'contact@pronett.fr', href: 'mailto:contact@pronett.fr', color: 'bg-emerald-100 text-emerald-600' },
-              { icon: <MapPin size={24} />, title: 'Zone d\'intervention', value: 'Votre ville & alentours', href: '#', color: 'bg-purple-100 text-purple-600' },
+              { icon: <Mail size={24} />, title: 'Email', value: 'topcleaning16@gmail.com', href: 'mailto:topcleaning16@gmail.com', color: 'bg-emerald-100 text-emerald-600' },
+              { icon: <MapPin size={24} />, title: 'Zone d\'intervention', value: 'Nouvelle-Aquitaine & Paris', href: '#', color: 'bg-purple-100 text-purple-600' },
             ].map(({ icon, title, value, href, color }) => (
               <a key={title} href={href}
                 className="card p-6 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
@@ -295,12 +295,12 @@ export default function Home() {
                   </a>
                 </li>
                 <li>
-                  <a href="mailto:contact@pronett.fr" className="flex items-center gap-2 hover:text-white transition-colors">
-                    <Mail size={14} /> contact@pronett.fr
+                  <a href="mailto:topcleaning16@gmail.com" className="flex items-center gap-2 hover:text-white transition-colors">
+                    <Mail size={14} /> topcleaning16@gmail.com
                   </a>
                 </li>
                 <li className="flex items-center gap-2">
-                  <MapPin size={14} /> Votre ville & alentours
+                  <MapPin size={14} /> Nouvelle-Aquitaine & Paris
                 </li>
               </ul>
               <div className="mt-6">

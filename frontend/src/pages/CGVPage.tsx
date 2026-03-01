@@ -132,7 +132,7 @@ export default function CGVPage() {
                 <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">•</span>L'envoi de devis et factures</li>
                 <li className="flex items-start gap-2"><span className="text-blue-500 mt-0.5">•</span>Les communications relatives aux prestations</li>
               </ul>
-              <p className="text-sm leading-relaxed mb-2">Conformément au RGPD, le Client dispose d'un droit d'accès, de rectification, de suppression et de portabilité de ses données. Pour exercer ces droits, contactez-nous à : <strong>contact@luminett.fr</strong></p>
+              <p className="text-sm leading-relaxed mb-2">Conformément au RGPD, le Client dispose d'un droit d'accès, de rectification, de suppression et de portabilité de ses données. Pour exercer ces droits, contactez-nous à : <strong>topcleaning16@gmail.com</strong></p>
               <p className="text-sm leading-relaxed">Les données ne sont pas cédées à des tiers et sont conservées pour la durée légale applicable.</p>
             </section>
 
@@ -143,7 +143,7 @@ export default function CGVPage() {
 
             <section>
               <h2 className="text-lg font-bold text-slate-800 mb-3 pb-2 border-b border-slate-100">Article 13 — Réclamations</h2>
-              <p className="text-sm leading-relaxed">Toute réclamation doit être adressée par email à <strong>contact@luminett.fr</strong> ou par téléphone au <strong>06 10 85 49 18</strong>. LumiNett s'engage à traiter les réclamations dans un délai de <strong>48 heures ouvrées</strong>.</p>
+              <p className="text-sm leading-relaxed">Toute réclamation doit être adressée par email à <strong>topcleaning16@gmail.com</strong> ou par téléphone au <strong>06 10 85 49 18</strong>. LumiNett s'engage à traiter les réclamations dans un délai de <strong>48 heures ouvrées</strong>.</p>
             </section>
 
             <section>
