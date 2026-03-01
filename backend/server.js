@@ -260,15 +260,42 @@ async function sendSignatureNotifEmail(quote) {
 // ─── Route test email (admin) ─────────────────────────────────────────────────
 app.post('/api/admin/test-email', adminAuth, async (req, res) => {
   const adminEmail = process.env.ADMIN_EMAIL || 'topcleaning16@gmail.com';
+  const results = { admin: null, client: null };
+
+  // Test email admin
   try {
-    await sendEmail(adminEmail, '✅ Test email — Cleaning 16',
-      wrapEmail(`<h2 style="color:#1d4ed8;margin-top:0">Test réussi !</h2>
-        <p style="color:#475569">La configuration email fonctionne correctement.</p>
-        <p style="color:#64748b;font-size:13px">Envoyé depuis : ${mailerFrom}<br>Destinataire : ${adminEmail}</p>`));
-    res.json({ success: true, message: `Email de test envoyé à ${adminEmail}` });
+    await sendEmail(adminEmail, '✅ Test admin — Cleaning 16',
+      wrapEmail(`<h2 style="color:#1d4ed8;margin-top:0">Test admin réussi !</h2>
+        <p style="color:#475569">Email admin fonctionnel.</p>
+        <p style="color:#64748b;font-size:13px">Depuis : ${mailerFrom}<br>Vers : ${adminEmail}</p>`));
+    results.admin = 'ok';
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    results.admin = e.message;
   }
+
+  // Test email client (envoyé aussi à l'admin pour vérifier le template client)
+  try {
+    await sendEmail(adminEmail, '✅ Test client — Cleaning 16',
+      wrapEmail(`<p>Bonjour <strong>Test Client</strong>,</p>
+        <p style="color:#475569">Ceci est un test de l'email de confirmation client.</p>
+        <div style="background:#eff6ff;border-left:4px solid #1d4ed8;padding:16px 20px;margin:20px 0;border-radius:0 8px 8px 0">
+          <p style="margin:0 0 8px;color:#1e40af;font-weight:700">Récapitulatif test</p>
+          <p style="margin:4px 0;color:#334155">📅 Date : <strong>01/03/2026</strong></p>
+          <p style="margin:4px 0;color:#334155">🕐 Créneau : <strong>09h–12h</strong></p>
+          <p style="margin:4px 0;color:#334155">📍 Adresse : <strong>1 rue de la Propreté</strong></p>
+        </div>
+        <p style="color:#475569">Cordialement,<br><strong>L'équipe Cleaning 16</strong></p>`));
+    results.client = 'ok';
+  } catch (e) {
+    results.client = e.message;
+  }
+
+  const allOk = results.admin === 'ok' && results.client === 'ok';
+  const status = allOk ? 200 : 500;
+  const message = allOk
+    ? `2 emails envoyés à ${adminEmail} (admin + template client)`
+    : `Admin: ${results.admin} | Client: ${results.client}`;
+  res.status(status).json({ success: allOk, message, results });
 });
 
 // ─── Routes Auth Admin ────────────────────────────────────────────────────────

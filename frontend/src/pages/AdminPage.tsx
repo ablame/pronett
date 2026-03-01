@@ -484,9 +484,12 @@ export default function AdminPage() {
       clearTimeout(timeout);
       const data = await res.json();
       if (res.ok) {
-        setTestEmailResult({ ok: true, msg: data.message });
+        setTestEmailResult({ ok: true, msg: data.message || `Envoyé — admin: ✅  client: ✅` });
       } else {
-        setTestEmailResult({ ok: false, msg: data.error || 'Erreur inconnue' });
+        const detail = data.results
+          ? `Admin: ${data.results.admin === 'ok' ? '✅' : '❌ ' + data.results.admin} | Client: ${data.results.client === 'ok' ? '✅' : '❌ ' + data.results.client}`
+          : data.error || 'Erreur inconnue';
+        setTestEmailResult({ ok: false, msg: detail });
       }
     } catch (e: any) {
       clearTimeout(timeout);
